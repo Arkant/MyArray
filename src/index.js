@@ -32,8 +32,10 @@ class MyArray {
       return undefined;
     }
     else {
+      const returned = this[this.length - 1];
       delete this[this.length - 1];
-      return this[this.length - 1];
+      this.length -= 1;
+      return returned;
     }
   }
   // Method callback on each
