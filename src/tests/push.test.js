@@ -14,7 +14,7 @@ describe('tests for method push', () => {
   });
 
   test('instance has not own property push', () => {
-    expect(arr.prototype.hasOwnProperty.push).toBeFalsy();
+    expect(Object.prototype.hasOwnProperty.call(arr, 'push')).toBeFalsy();
   });
 
   test('method returns new length', () => {
