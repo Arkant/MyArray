@@ -11,11 +11,13 @@ class MyArray {
         throw new RangeError('Invalid length of array');
       }
     }
+    else {
+      for (let i = 0; i < a.length; i++) {
+        this[i] = a[i];
+      }
 
-    for (let i = 0; i < a.length; i++) {
-      this[i] = a[i];
+      this.length = a.length;
     }
-    this.length = a.length;
   }
   // Method push to the end of arr
   push(...a) {
@@ -85,16 +87,17 @@ class MyArray {
   toString() {
     let str = String();
 
-    if (this.length === 0) {
-      return '';
-    }
-
-    if (this.length === undefined) {
-      return '';
+    if (this.length === 0 || this.length === undefined) {
+      return str;
     }
 
     for (let i = 0; i < this.length; i++) {
-      str += `${this[i]},`;
+      if (i === this.length - 1) {
+        str += `${this[i]}`;
+      }
+      else {
+        str += `${this[i]},`;
+      }
     }
     return str;
   }
@@ -135,4 +138,7 @@ class MyArray {
 }
 
 
-export default MyArray;
+export default MyArray; // отчистить сверху консоль
+
+const arr = new MyArray(5);
+console.log(arr.length);
