@@ -63,11 +63,29 @@ class MyArray {
     return arr;
   }
   // Method create arr from value
-  static from(value) {
+  static from(array, callback, thisArg) {
     const arr = new MyArray();
 
-    for (let i = 0; i < value.length; i++) {
-      arr.push(value[i]);
+    if (array === undefined || array.length === 0) {
+      throw new TypeError('items is undefined');
+    } else if (array === null) {
+      throw new TypeError('items is null');
+    }
+
+    if (callback && thisArg) {
+      for (let i = 0; i < array.length; i++) {
+        arr.length += 1;
+        arr[i] = callback.call(thisArg, array[i], i, array);
+      }
+    } else if (callback) {
+      for (let i = 0; i < array.length; i++) {
+        arr.length += 1;
+        arr[i] = callback(array[i], i, array);
+      }
+    } else {
+      for (let i = 0; i < array.length; i++) {
+        arr.push(array[i]);
+      }
     }
     return arr;
   }
