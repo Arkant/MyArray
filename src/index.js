@@ -1,6 +1,17 @@
 /* eslint-disable no-console */
 class MyArray {
   constructor(...a) {
+    if (a.length === 0) {
+      this.length = 0;
+    } else if (a.length === 1 && typeof a[0] === 'number') {
+      if (Number.isFinite(a[0]) && a[0] >= 0) {
+        this.length = a[0];
+      }
+      else {
+        throw new RangeError('Invalid length of array');
+      }
+    }
+
     for (let i = 0; i < a.length; i++) {
       this[i] = a[i];
     }
@@ -73,6 +84,14 @@ class MyArray {
   // Method convert to string
   toString() {
     let str = String();
+
+    if (this.length === 0) {
+      return '';
+    }
+
+    if (this.length === undefined) {
+      return '';
+    }
 
     for (let i = 0; i < this.length; i++) {
       str += `${this[i]},`;
