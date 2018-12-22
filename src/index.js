@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 class MyArray {
   constructor(...a) {
     if (a.length === 0) {
@@ -138,7 +137,4 @@ class MyArray {
 }
 
 
-export default MyArray; // отчистить сверху консоль
-
-const arr = new MyArray(5);
-console.log(arr.length);
+export default MyArray;
