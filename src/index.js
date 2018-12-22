@@ -54,11 +54,11 @@ class MyArray {
     return arr;
   }
   // Method filter by callback
-  filter(callback) {
+  filter(callback, thisArg) {
     const arr = new MyArray();
 
     for (let i = 0; i < this.length; i++) {
-      if (callback(this[i], i, this)) {
+      if (callback.call(thisArg, this[i], i, this)) {
         arr.push(this[i]);
       }
     }
