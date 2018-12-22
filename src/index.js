@@ -39,17 +39,17 @@ class MyArray {
     }
   }
   // Method callback on each
-  foreach(callback, thisArg) {
+  forEach(callback, thisArg) {
     for (let i = 0; i < this.length; i++) {
       callback.call(thisArg, this[i], i, this);
     }
   }
   // Method map by callback
-  map(callback) {
+  map(callback, thisArg) {
     const arr = new MyArray();
 
     for (let i = 0; i < this.length; i++) {
-      arr.push(callback(this[i], i, this));
+      arr.push(callback.call(thisArg, this[i], i, this));
     }
     return arr;
   }
