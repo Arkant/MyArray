@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 class MyArray {
   constructor(...a) {
     for (let i = 0; i < a.length; i++) {
@@ -8,8 +9,8 @@ class MyArray {
   // Method push to the end of arr
   push(...a) {
     for (let i = 0; i < a.length; i++) {
-      this.length += 1;
       this[this.length] = a[i];
+      this.length += 1;
     }
     return this.length;
   }
@@ -34,7 +35,7 @@ class MyArray {
     const arr = new MyArray();
 
     for (let i = 0; i < this.length; i++) {
-      arr.pushTo(callback(this[i], i, this));
+      arr.push(callback(this[i], i, this));
     }
     return arr;
   }
@@ -44,7 +45,7 @@ class MyArray {
 
     for (let i = 0; i < this.length; i++) {
       if (callback(this[i], i, this)) {
-        arr.pushTo(this[i]);
+        arr.push(this[i]);
       }
     }
     return arr;
@@ -54,7 +55,7 @@ class MyArray {
     const arr = new MyArray();
 
     for (let i = 0; i < value.length; i++) {
-      arr.pushTo(value[i]);
+      arr.push(value[i]);
     }
     return arr;
   }
