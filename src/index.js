@@ -93,14 +93,29 @@ class MyArray {
   }
 
   // Method reduce arr
-  reduce(callback, start) {
-    let res = start;
-    res === undefined ? res = this[0] : start;
+  reduce(callback, initialValue) {
+    let len = null;
+    let accumulator = null;
+    let i = 0;
+    initialValue !== undefined ? accumulator = initialValue : accumulator = this[0];
+    this !== null ? len = this.length : len = 0;
 
-    for (let i = 0; i < this.length; i++) {
-      res = callback(null, res, this[i], i, this);
+    if (len === 0 && !initialValue) {
+      throw new TypeError('Reduce of empty array with no initial value');
     }
-    return res;
+
+    if (len === 1 && !initialValue) {
+      return this[0];
+    }
+
+    if (len === 0 && initialValue) {
+      return initialValue;
+    }
+
+    for (; i < len; i++) {
+      accumulator = callback(accumulator, this[i], i, this);
+    }
+    return accumulator;
   }
   // Method convert to string
   toString() {
