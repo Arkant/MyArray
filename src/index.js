@@ -162,6 +162,17 @@ class MyArray {
     }
     return this;
   }
+
+  // find
+  find(callback, thisArg) {
+    for (let i = 0; i < this.length; i++) {
+      if (callback.call(thisArg, this[i], i, this)) {
+        return this[i];
+      }
+    }
+    return undefined;
+  }
+
   // spread
   * [Symbol.iterator]() {
     // let l = this.length;
