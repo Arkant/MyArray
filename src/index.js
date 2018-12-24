@@ -173,6 +173,40 @@ class MyArray {
     return undefined;
   }
 
+  // slice
+  slice(begin, end) {
+    let arr = null;
+    const len = this.length;
+    let size = this.length;
+    let start = begin || 0;
+    start = (start >= 0) ? start : len + start;
+
+    let upTo = (end) ? end : len;
+
+    if (end < 0) {
+      upTo = len + end;
+    }
+
+    size = upTo - start;
+
+
+    if (size > 0) {
+      arr = new MyArray(size);
+
+      if (this.charAt) {
+        for (let i = 0; i < size; i++) {
+          arr[i] = this.charAt(start + i);
+        }
+      } else {
+        for (let i = 0; i < size; i++) {
+          arr[i] = this[start + i];
+        }
+      }
+
+      return arr;
+    }
+  }
+
   // spread
   * [Symbol.iterator]() {
     // let l = this.length;
