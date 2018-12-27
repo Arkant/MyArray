@@ -209,7 +209,6 @@ class MyArray {
 
   // spread
   * [Symbol.iterator]() {
-    // let l = this.length;
     for (let i = 0; i < this.length; i++) {
       yield this[i];
     }
