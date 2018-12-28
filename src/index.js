@@ -1,27 +1,26 @@
 class MyArray {
-  constructor(...a) {
-    if (a.length === 0) {
-      this.length = 0;
-    } else if (a.length === 1 && typeof a[0] === 'number') {
-      if (Number.isFinite(a[0]) && a[0] >= 0) {
-        this.length = a[0];
+  constructor(...args) {
+    if (args.length === 1 && typeof args[0] === 'number') {
+      if (Number.isFinite(args[0]) && args[0] >= 0) {
+        this.length = args[0];
       }
       else {
         throw new RangeError('Invalid length of array');
       }
     }
     else {
-      for (let i = 0; i < a.length; i++) {
-        this[i] = a[i];
+      for (let i = 0; i < args.length; i++) {
+        this[i] = args[i];
       }
 
-      this.length = a.length;
+      this.length = args.length;
     }
   }
+
   // Method push to the end of arr
-  push(...a) {
-    for (let i = 0; i < a.length; i++) {
-      this[this.length] = a[i];
+  push(...args) {
+    for (let i = 0; i < args.length; i++) {
+      this[this.length] = args[i];
       this.length += 1;
     }
     return this.length;
@@ -32,10 +31,10 @@ class MyArray {
       return undefined;
     }
     else {
-      const returned = this[this.length - 1];
+      const returnedValue = this[this.length - 1];
       delete this[this.length - 1];
       this.length -= 1;
-      return returned;
+      return returnedValue;
     }
   }
   // Method callback on each
@@ -54,7 +53,7 @@ class MyArray {
     return arr;
   }
   // Method filter by callback
-  filter(callback, thisArg) {
+  filter(callback, thisArg = this) {
     const arr = new MyArray();
 
     for (let i = 0; i < this.length; i++) {
@@ -68,7 +67,7 @@ class MyArray {
   static from(array, callback, thisArg) {
     const arr = new MyArray();
 
-    if (array === undefined || array.length === 0) {
+    if (array === undefined) {
       throw new TypeError('items is undefined');
     } else if (array === null) {
       throw new TypeError('items is null');
@@ -97,7 +96,7 @@ class MyArray {
     let len = null;
     let accumulator = null;
     let i = 0;
-    initialValue !== undefined ? accumulator = initialValue : accumulator = this[0];
+    initialValue !== undefined ? (accumulator = initialValue, i = 0) : (accumulator = this[0], i = 1);
     this !== null ? len = this.length : len = 0;
 
     if (len === 0 && !initialValue) {
@@ -153,7 +152,7 @@ class MyArray {
         const current = this[i];
         let j = i;
 
-        while (j > 0 && String(this[j - 1]) > String(current)) {
+        while (j > 0 && `${this[j - 1]}` > `${current}`) {
           this[j] = this[j - 1];
           j -= 1;
         }
@@ -176,35 +175,26 @@ class MyArray {
   // slice
   slice(begin, end) {
     let arr = null;
-    const len = this.length;
     let size = this.length;
     let start = begin || 0;
-    start = (start >= 0) ? start : len + start;
+    let upTo = (end) ? end : size;
 
-    let upTo = (end) ? end : len;
-
-    if (end < 0) {
-      upTo = len + end;
-    }
-
+    start = (start >= 0) ? start : size + start;
+    (end < 0) ? upTo = size + end : true;
     size = upTo - start;
+    (size > 0) ? arr = new MyArray(size) : true;
 
-
-    if (size > 0) {
-      arr = new MyArray(size);
-
-      if (this.charAt) {
-        for (let i = 0; i < size; i++) {
-          arr[i] = this.charAt(start + i);
-        }
-      } else {
-        for (let i = 0; i < size; i++) {
-          arr[i] = this[start + i];
-        }
+    if (this.charAt) {
+      for (let i = 0; i < size; i++) {
+        arr[i] = this.charAt(start + i);
       }
-
-      return arr;
+    } else {
+      for (let i = 0; i < size; i++) {
+        arr[i] = this[start + i];
+      }
     }
+
+    return arr;
   }
 
   // spread
