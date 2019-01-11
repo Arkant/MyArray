@@ -28,7 +28,7 @@ class MyArray {
   // Method pop, delete last el
   pop() {
     if (this.length === 0) {
-      return undefined;
+      return;
     }
     else {
       const returnedValue = this[this.length - 1];
@@ -48,7 +48,8 @@ class MyArray {
     const arr = new MyArray();
 
     for (let i = 0; i < this.length; i++) {
-      arr.push(callback.call(thisArg, this[i], i, this));
+      arr[i] = callback.call(thisArg, this[i], i, this)
+      arr.length += 1;
     }
     return arr;
   }
@@ -58,7 +59,8 @@ class MyArray {
 
     for (let i = 0; i < this.length; i++) {
       if (callback.call(thisArg, this[i], i, this)) {
-        arr.push(this[i]);
+        arr[arr.length] = this[i];
+        arr.length += 1;
       }
     }
     return arr;
@@ -73,19 +75,15 @@ class MyArray {
       throw new TypeError('items is null');
     }
 
-    if (callback && thisArg) {
+    if (callback) {
       for (let i = 0; i < array.length; i++) {
-        arr.length += 1;
         arr[i] = callback.call(thisArg, array[i], i, array);
-      }
-    } else if (callback) {
-      for (let i = 0; i < array.length; i++) {
         arr.length += 1;
-        arr[i] = callback(array[i], i, array);
       }
     } else {
       for (let i = 0; i < array.length; i++) {
-        arr.push(array[i]);
+        arr[i] = array[i];
+        arr.length += 1;
       }
     }
     return arr;
@@ -93,11 +91,8 @@ class MyArray {
 
   // Method reduce arr
   reduce(callback, initialValue) {
-    let len = null;
-    let accumulator = null;
-    let i = 0;
-    initialValue !== undefined ? (accumulator = initialValue, i = 0) : (accumulator = this[0], i = 1);
-    this !== null ? len = this.length : len = 0;
+    const len = this.length;
+    let accumulator = initialValue === undefined ? this[0] : callback(initialValue, this[0], 0, this);
 
     if (len === 0 && !initialValue) {
       throw new TypeError('Reduce of empty array with no initial value');
@@ -111,16 +106,17 @@ class MyArray {
       return initialValue;
     }
 
-    for (; i < len; i++) {
+    for (let i = 1; i < len; i++) {
       accumulator = callback(accumulator, this[i], i, this);
     }
+
     return accumulator;
   }
   // Method convert to string
   toString() {
     let str = String();
 
-    if (this.length === 0 || this.length === undefined) {
+    if (this.length === 0) {
       return str;
     }
 
@@ -136,29 +132,19 @@ class MyArray {
   }
   // вставками + пузырьком
   sort(callback) {
-    if (callback) {
-      for (let i = 0; i < this.length - 1; i++) {
-        for (let j = 0; j < this.length - 1; j++) {
-          if (!(callback(this[j], this[j + 1]) <= 0)) {
-            const max = this[j];
-            this[j] = this[j + 1];
-            this[j + 1] = max;
-          }
-        }
-      }
-    }
-    else {
-      for (let i = 1; i < this.length; i++) {
-        const current = this[i];
-        let j = i;
+    let cbDefault = (a, b) => `${a}` > `${b}`;
+    cbDefault = callback ? callback : cbDefault;
 
-        while (j > 0 && `${this[j - 1]}` > `${current}`) {
-          this[j] = this[j - 1];
-          j -= 1;
+    for (let i = 0; i < this.length - 1; i++) {
+      for (let j = 0; j < this.length - 1; j++) {
+        if (!(cbDefault(this[j], this[j + 1]) <= 0)) {
+          const max = this[j];
+          this[j] = this[j + 1];
+          this[j + 1] = max;
         }
-        this[j] = current;
       }
     }
+
     return this;
   }
 
@@ -169,29 +155,29 @@ class MyArray {
         return this[i];
       }
     }
-    return undefined;
   }
 
   // slice
-  slice(begin, end) {
+  slice(begin = 0, end) {
     let arr = null;
-    let size = this.length;
-    let start = begin || 0;
-    let upTo = (end) ? end : size;
+    let arrSize = this.length;
+    let start = begin;
+    let finish = end ? end : arrSize;
 
-    start = (start >= 0) ? start : size + start;
-    (end < 0) ? upTo = size + end : true;
-    size = upTo - start;
-    (size > 0) ? arr = new MyArray(size) : true;
+    start = (start >= 0) ? start : arrSize + start;
 
-    if (this.charAt) {
-      for (let i = 0; i < size; i++) {
-        arr[i] = this.charAt(start + i);
-      }
-    } else {
-      for (let i = 0; i < size; i++) {
-        arr[i] = this[start + i];
-      }
+    if (end < 0) {
+      finish = arrSize + end;
+    }
+
+    arrSize = finish - start;
+
+    if (arrSize > 0) {
+      arr = new MyArray(arrSize);
+    }
+
+    for (let i = 0; i < arrSize; i++) {
+      arr[i] = this[start + i];
     }
 
     return arr;
