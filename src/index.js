@@ -28,7 +28,7 @@ class MyArray {
   // Method pop, delete last el
   pop() {
     if (this.length === 0) {
-      return;
+      return undefined;
     }
     else {
       const returnedValue = this[this.length - 1];
@@ -48,7 +48,7 @@ class MyArray {
     const arr = new MyArray();
 
     for (let i = 0; i < this.length; i++) {
-      arr[i] = callback.call(thisArg, this[i], i, this)
+      arr[i] = callback.call(thisArg, this[i], i, this);
       arr.length += 1;
     }
     return arr;
