@@ -139,13 +139,13 @@ class MyArray<T> implements IMyArray<T> {
     return str;
   }
   // вставками + пузырьком
-  sort(callback) {
-    let cbDefault = (a, b) => `${a}` > `${b}`;
+  public sort = (callback?: (a: T, b: T) => boolean) => {
+    let cbDefault = (a: T, b: T) => `${a}` > `${b}`;
     cbDefault = callback ? callback : cbDefault;
 
     for (let i = 0; i < this.length - 1; i++) {
       for (let j = 0; j < this.length - 1; j++) {
-        if (!(cbDefault(this[j], this[j + 1]) <= 0)) {
+        if (!(cbDefault(this[j], this[j + 1]) <= false)) {
           const max = this[j];
           this[j] = this[j + 1];
           this[j + 1] = max;
@@ -157,7 +157,7 @@ class MyArray<T> implements IMyArray<T> {
   }
 
   // find
-  find(callback, thisArg?: any): T | void {
+  public find = (callback: (value: T, index: number, obj: IMyArray<T>) => boolean, thisArg?: any) => {
     for (let i = 0; i < this.length; i++) {
       if (callback.call(thisArg, this[i], i, this)) {
         return this[i];
@@ -203,4 +203,4 @@ class MyArray<T> implements IMyArray<T> {
 export default MyArray;
 
 let arr = new Array();
-arr.reduce();
+arr.find();
