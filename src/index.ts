@@ -2,7 +2,7 @@ class MyArray<T> implements IMyArray<T> {
   [i:number]: T;
   length: number;
 
-  constructor(...args: T[]) {
+  constructor(...args: any[]) {
     if (args.length === 1 && typeof args[0] === 'number') {
       if (Number.isFinite(args[0]) && args[0] >= 0) {
         this.length = args[0];
@@ -21,7 +21,7 @@ class MyArray<T> implements IMyArray<T> {
   }
 
   // Method push to the end of arr
-  public push = (...args: any[]) =>  {
+  public push = (...args: T[]) =>  {
     for (let i = 0; i < args.length; i++) {
       this[this.length] = args[i];
       this.length += 1;
@@ -30,7 +30,7 @@ class MyArray<T> implements IMyArray<T> {
   }
     
   // Method pop, delete last el
-  pop() {
+  public pop = () => {
     if (this.length === 0) {
       return undefined;
     }
@@ -42,14 +42,14 @@ class MyArray<T> implements IMyArray<T> {
     }
   }
   // Method callback on each
-  forEach(callback, thisArg : T) {
+  public forEach = (callback: (value: any, index: number, array: MyArray<T>) => void, thisArg : any) => {
     for (let i = 0; i < this.length; i++) {
       callback.call(thisArg, this[i], i, this);
     }
   }
   // Method map by callback
-  map(callback, thisArg) {
-    const arr = new MyArray();
+  map(callback, thisArg?: any) {
+    const arr = new MyArray<T>();
 
     for (let i = 0; i < this.length; i++) {
       arr[i] = callback.call(thisArg, this[i], i, this);
@@ -71,8 +71,8 @@ class MyArray<T> implements IMyArray<T> {
   }
   // Method create arr from value
   // static from(array: [], callback : () => any, thisArg?: any) {
-  static from(array: [], callback : () => any, thisArg?: any) {
-    const arr = new MyArray();
+  static from(array, callback, thisArg?: any) {
+    const arr = new MyArray<T>();
 
     if (array === undefined) {
       throw new TypeError('items is undefined');
@@ -154,7 +154,7 @@ class MyArray<T> implements IMyArray<T> {
   }
 
   // find
-  find(callback, thisArg) {
+  find(callback, thisArg?: any): T | void {
     for (let i = 0; i < this.length; i++) {
       if (callback.call(thisArg, this[i], i, this)) {
         return this[i];
@@ -163,7 +163,7 @@ class MyArray<T> implements IMyArray<T> {
   }
 
   // slice
-  slice(begin = 0, end: number) {
+  public slice = (begin = 0, end: number) => {
     let arr = null;
     let arrSize = this.length;
     let start = begin;
@@ -178,7 +178,7 @@ class MyArray<T> implements IMyArray<T> {
     arrSize = finish - start;
 
     if (arrSize > 0) {
-      arr = new MyArray(arrSize);
+      arr = new MyArray<T>(arrSize);
     }
 
     for (let i = 0; i < arrSize; i++) {
