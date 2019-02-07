@@ -1,5 +1,8 @@
-class MyArray {
-  constructor(...args) {
+class MyArray<T> implements IMyArray<T> {
+  [i:number]: T;
+  length: number;
+
+  constructor(...args: T[]) {
     if (args.length === 1 && typeof args[0] === 'number') {
       if (Number.isFinite(args[0]) && args[0] >= 0) {
         this.length = args[0];
@@ -18,13 +21,14 @@ class MyArray {
   }
 
   // Method push to the end of arr
-  push(...args) {
+  public push = (...args: any[]) =>  {
     for (let i = 0; i < args.length; i++) {
       this[this.length] = args[i];
       this.length += 1;
     }
     return this.length;
   }
+    
   // Method pop, delete last el
   pop() {
     if (this.length === 0) {
@@ -38,7 +42,7 @@ class MyArray {
     }
   }
   // Method callback on each
-  forEach(callback, thisArg) {
+  forEach(callback, thisArg : T) {
     for (let i = 0; i < this.length; i++) {
       callback.call(thisArg, this[i], i, this);
     }
@@ -66,7 +70,8 @@ class MyArray {
     return arr;
   }
   // Method create arr from value
-  static from(array, callback, thisArg) {
+  // static from(array: [], callback : () => any, thisArg?: any) {
+  static from(array: [], callback : () => any, thisArg?: any) {
     const arr = new MyArray();
 
     if (array === undefined) {
@@ -158,7 +163,7 @@ class MyArray {
   }
 
   // slice
-  slice(begin = 0, end) {
+  slice(begin = 0, end: number) {
     let arr = null;
     let arrSize = this.length;
     let start = begin;
