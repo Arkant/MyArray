@@ -2,10 +2,10 @@ class MyArray<T> implements IMyArray<T> {
   [i:number]: T;
   length: number;
 
-  constructor(...args: any[]) {
+  constructor(...args: T[] | number[]) {
     if (args.length === 1 && typeof args[0] === 'number') {
       if (Number.isFinite(args[0]) && args[0] >= 0) {
-        this.length = args[0];
+        this.length = <number>args[0];
       }
       else {
         throw new RangeError('Invalid length of array');
@@ -13,7 +13,7 @@ class MyArray<T> implements IMyArray<T> {
     }
     else {
       for (let i = 0; i < args.length; i++) {
-        this[i] = args[i];
+        this[i] = <T>args[i];
       }
 
       this.length = args.length;
@@ -41,14 +41,16 @@ class MyArray<T> implements IMyArray<T> {
       return returnedValue;
     }
   }
+
   // Method callback on each
-  public forEach = (callback: (value: any, index: number, array: MyArray<T>) => void, thisArg : any) => {
+  public forEach = (callback: (value: T, index: number, array: MyArray<T>) => void, thisArg?: any) => {
     for (let i = 0; i < this.length; i++) {
       callback.call(thisArg, this[i], i, this);
     }
   }
+
   // Method map by callback
-  map(callback, thisArg?: any) {
+  public map = (callback: (value: T, index: number, array: MyArray<T>) => void, thisArg?: any) => {
     const arr = new MyArray<T>();
 
     for (let i = 0; i < this.length; i++) {
@@ -57,9 +59,10 @@ class MyArray<T> implements IMyArray<T> {
     }
     return arr;
   }
+
   // Method filter by callback
-  filter(callback, thisArg = this) {
-    const arr = new MyArray();
+  public filter = (callback: (value: T, index: number, array: MyArray<T>) => any, thisArg = this) => {
+    const arr = new MyArray<T>();
 
     for (let i = 0; i < this.length; i++) {
       if (callback.call(thisArg, this[i], i, this)) {
@@ -69,7 +72,7 @@ class MyArray<T> implements IMyArray<T> {
     }
     return arr;
   }
-  // Method create arr from value
+
   // static from(array: [], callback : () => any, thisArg?: any) {
   static from(array, callback, thisArg?: any) {
     const arr = new MyArray<T>();
@@ -95,7 +98,7 @@ class MyArray<T> implements IMyArray<T> {
   }
 
   // Method reduce arr
-  reduce(callback, initialValue) {
+  public reduce = (callback: (previousValue: T, currentValue: T, index: number, array: MyArray<T>) => any, initialValue: T) => {
     const len = this.length;
     let accumulator = initialValue === undefined ? this[0] : callback(initialValue, this[0], 0, this);
 
@@ -118,7 +121,7 @@ class MyArray<T> implements IMyArray<T> {
     return accumulator;
   }
   // Method convert to string
-  toString() {
+  public toString = () => {
     let str = String();
 
     if (this.length === 0) {
@@ -198,3 +201,6 @@ class MyArray<T> implements IMyArray<T> {
 
 
 export default MyArray;
+
+let arr = new Array();
+arr.reduce();

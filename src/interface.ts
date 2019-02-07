@@ -1,17 +1,17 @@
 interface IMyArray<T> {
-    length : number| T;
+    length : number | T;
     [i:number] : T;
-    push(...args:T[]): number;
-    pop(): T;
-    forEach(callback: (value: any, index: number, array:IMyArray<T>) => void, thisArg? : any): void;
-    // map(callback: callback, thisArg?: any): IMyArray<T>;
-    // filter()
+    push(...args: T[]): number;
+    pop(): T | undefined;
+    slice(a?:number, b?: number): IMyArray<T>;
+    toString(): string;
+    forEach(callback: (value: T, index: number, array: IMyArray<T>) => void, thisArg? : any): void;
+    map(callback: (value: T, index: number, array: IMyArray<T>) => void, thisArg? : any): IMyArray<T>;
+    filter(callback: (value: T, index: number, array: IMyArray<T>) => void, thisArg? : any): IMyArray<T>;
+    reduce(callback: (previousValue: T, currentValue: T, index: number, array: IMyArray<T>) => T, initialValue: T): T;
     // static from()
-    // reduce()    
-    // toString()
-    // sort()
+    // sort(callback?: (a: T, b: T) => number): this;
     // find()
-    slice(a:number, b: number): IMyArray<T>;
 } 
 
 // interface Map<K, V> {
