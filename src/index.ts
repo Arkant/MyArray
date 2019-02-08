@@ -4,10 +4,9 @@ class MyArray<T> implements IMyArray<T> {
 
   constructor(...args: T[] | number[]) {
     if (args.length === 1 && typeof args[0] === 'number') {
-      if (Number.isFinite(args[0]) && args[0] >= 0) {
+      if (Number.isFinite(<number>args[0]) && args[0] >= 0) {
         this.length = <number>args[0];
-      }
-      else {
+      } else {
         throw new RangeError('Invalid length of array');
       }
     }
@@ -199,8 +198,4 @@ class MyArray<T> implements IMyArray<T> {
   }
 }
 
-
 export default MyArray;
-
-let arr = new Array();
-arr.find();
