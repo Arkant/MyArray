@@ -48,10 +48,9 @@ class MyArray<T> implements IMyArray<T> {
       callback.call(thisArg, this[i], i, this);
     }
   }
-
   
   /** Creates a new array with the results of called callback on every element in the calling arr */
-  public map<U>(callback: (value: T, index: number, array: MyArray<T>) => void, thisArg?:any[]): MyArray<U> {
+  public map<U>(callback: (value: T, index: number, array: MyArray<T>) => void, thisArg?:any[]) {
     const resultArray = new MyArray<U>();
 
     for (let i = 0; i < this.length; i++) {
