@@ -58,7 +58,7 @@ class MyArray<T> implements IMyArray<T> {
       resultArray.length += 1;
     }
     return resultArray;
-}
+  }
 
   /** Creates a new array with all elements that pass the test of callback */
   public filter(callback: (value: T, index: number, array: MyArray<T>) => boolean, thisArg?: any) {
