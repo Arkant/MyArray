@@ -1,10 +1,12 @@
+import IMyArray from './interface';
+
 class MyArray<T> implements IMyArray<T> {
   [i:number]: T;
   length: number;
 
   constructor(...args: T[] | number[]) {
     if (args.length === 1 && typeof args[0] === 'number') {
-      if (Number.isFinite(<number>args[0]) && args[0] >= 0) {
+      if (args[0] >= 0) {
         this.length = <number>args[0];
       } else {
         throw new RangeError('Invalid length of array');
@@ -19,8 +21,8 @@ class MyArray<T> implements IMyArray<T> {
     }
   }
 
-  // Method push to the end of arr
-  public push = (...args: T[]) =>  {
+  /** Push to the end of arr */
+  public push(...args: T[]) {
     for (let i = 0; i < args.length; i++) {
       this[this.length] = args[i];
       this.length += 1;
@@ -28,12 +30,11 @@ class MyArray<T> implements IMyArray<T> {
     return this.length;
   }
     
-  // Method pop, delete last el
-  public pop = () => {
+  /** Delete last element of arr */
+  public pop()  {
     if (this.length === 0) {
       return undefined;
-    }
-    else {
+    } else {
       const returnedValue = this[this.length - 1];
       delete this[this.length - 1];
       this.length -= 1;
@@ -41,26 +42,27 @@ class MyArray<T> implements IMyArray<T> {
     }
   }
 
-  // Method callback on each
-  public forEach = (callback: (value: T, index: number, array: MyArray<T>) => void, thisArg?: any) => {
+  /** Call given callback on each element of arr */
+  public forEach(callback: (value: T, index: number, array: MyArray<T>) => void, thisArg?: any) {
     for (let i = 0; i < this.length; i++) {
       callback.call(thisArg, this[i], i, this);
     }
   }
 
-  // Method map by callback
-  public map = (callback: (value: T, index: number, array: MyArray<T>) => void, thisArg?: any) => {
-    const arr = new MyArray<T>();
+  
+  /** Creates a new array with the results of called callback on every element in the calling arr */
+  public map<U>(callback: (value: T, index: number, array: MyArray<T>) => void, thisArg?:any[]): MyArray<U> {
+    const resultArray = new MyArray<U>();
 
     for (let i = 0; i < this.length; i++) {
-      arr[i] = callback.call(thisArg, this[i], i, this);
-      arr.length += 1;
+      resultArray[i] = callback.call(thisArg, this[i], i, this);
+      resultArray.length += 1;
     }
-    return arr;
-  }
+    return resultArray;
+}
 
-  // Method filter by callback
-  public filter = (callback: (value: T, index: number, array: MyArray<T>) => any, thisArg = this) => {
+  /** Creates a new array with all elements that pass the test of callback */
+  public filter(callback: (value: T, index: number, array: MyArray<T>) => boolean, thisArg?: any) {
     const arr = new MyArray<T>();
 
     for (let i = 0; i < this.length; i++) {
@@ -72,8 +74,8 @@ class MyArray<T> implements IMyArray<T> {
     return arr;
   }
 
-  // static from(array: [], callback : () => any, thisArg?: any) {
-  static from(array, callback, thisArg?: any) {
+  /** Creates a new, MyArray instance from an array-like or iterable object. */
+  static from<T>(array: any, callback: (value: T, index: number, array: MyArray<T>) => void, thisArg?: any): MyArray<T> {
     const arr = new MyArray<T>();
 
     if (array === undefined) {
@@ -96,8 +98,8 @@ class MyArray<T> implements IMyArray<T> {
     return arr;
   }
 
-  // Method reduce arr
-  public reduce = (callback: (previousValue: T, currentValue: T, index: number, array: MyArray<T>) => any, initialValue: T) => {
+  /** Executes a reducer callback on each element of array resulting in a single output value. */
+  public reduce(callback: (accumulator: T, currentValue: T, index: number, array: MyArray<T>) => T, initialValue?: T) {
     const len = this.length;
     let accumulator = initialValue === undefined ? this[0] : callback(initialValue, this[0], 0, this);
 
@@ -119,8 +121,9 @@ class MyArray<T> implements IMyArray<T> {
 
     return accumulator;
   }
-  // Method convert to string
-  public toString = () => {
+
+  /** Returns a string representing the given array and its elements */
+  public toString() {
     let str = String();
 
     if (this.length === 0) {
@@ -137,8 +140,9 @@ class MyArray<T> implements IMyArray<T> {
     }
     return str;
   }
-  // вставками + пузырьком
-  public sort = (callback?: (a: T, b: T) => boolean) => {
+
+  /** Sorts the elements of an array in place and returns the array */
+  public sort(callback?: (a: T, b: T) => boolean) {
     let cbDefault = (a: T, b: T) => `${a}` > `${b}`;
     cbDefault = callback ? callback : cbDefault;
 
@@ -155,8 +159,8 @@ class MyArray<T> implements IMyArray<T> {
     return this;
   }
 
-  // find
-  public find = (callback: (value: T, index: number, obj: IMyArray<T>) => boolean, thisArg?: any) => {
+  /** Returns the value of the first element in the array that satisfies the provided callback. Otherwise undefined is returned. */
+  public find(callback: (value: T, index: number, obj: MyArray<T>) => T, thisArg?: any) {
     for (let i = 0; i < this.length; i++) {
       if (callback.call(thisArg, this[i], i, this)) {
         return this[i];
@@ -164,8 +168,8 @@ class MyArray<T> implements IMyArray<T> {
     }
   }
 
-  // slice
-  public slice = (begin = 0, end: number) => {
+  /** Returns a modified copy of an array selected from begin to end */
+  public slice(begin = 0, end: number) {
     let arr = null;
     let arrSize = this.length;
     let start = begin;
@@ -190,7 +194,7 @@ class MyArray<T> implements IMyArray<T> {
     return arr;
   }
 
-  // spread
+  /** Allows an iterable or an object to be expanded in places where zero or more arguments/keys */
   * [Symbol.iterator]() {
     for (let i = 0; i < this.length; i++) {
       yield this[i];
