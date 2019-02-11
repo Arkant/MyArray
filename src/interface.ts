@@ -1,6 +1,7 @@
 interface IMyArray<T> {
     length: number | T;
     [i:number]: T;
+
     push(...args: T[]): number;
     pop(): T | undefined;
     slice(a?: number, b?: number): IMyArray<T>;
